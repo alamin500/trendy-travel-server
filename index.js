@@ -10,22 +10,31 @@ app.use(express.json());
 
 const uri =
   "mongodb+srv://khair:khair@cluster0.2vil1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 app.get("/", (req, res) => {
-  res.send("Welcome our tour booking ff ff Website!");
+  res.send("Welcome our tour booking gg ff Website!");
   console.log(req);
 });
 client.connect((err) => {
-  const Tourscollection = client
-    .db("tourBookingWebsite")
-    .collection("tourBooking");
+  const ToursCollection = client.db("tourBookingWebsite").collection("tour");
   // perform actions on the collection object
 
+  // Add Services
+  app.post("/addServices", async (req, res) => {
+    console.log(req.body);
+    const result = await ToursCollection.insertOne(req.body);
+    console.log(result);
+  });
+
+  // Get Services
+  app.get("/services", async (req, res) => {
+    const result = await ToursCollection.find({}).toArray();
+    res.send(result);
+  });
   // client.close();
 });
 app.listen(process.env.PORT || port);
