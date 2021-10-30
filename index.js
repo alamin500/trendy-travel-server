@@ -21,6 +21,8 @@ app.get("/", (req, res) => {
 });
 client.connect((err) => {
   const ToursCollection = client.db("tourBookingWebsite").collection("tour");
+
+  const BooksCollection = client.db("tourBookingWebsite").collection("books");
   // perform actions on the collection object
 
   // Add Services
@@ -28,6 +30,30 @@ client.connect((err) => {
     console.log(req.body);
     const result = await ToursCollection.insertOne(req.body);
     console.log(result);
+  });
+
+  // Add MyBooks
+  app.post("/myBook", async (req, res) => {
+    console.log(req.body);
+    const result = await BooksCollection.insertOne(req.body);
+    console.log(result);
+  });
+
+  // My books
+  app.get("/myBooks/:email", async (req, res) => {
+    const result = await BooksCollection.find({
+      email: req.params.email,
+    }).toArray();
+    res.send(result);
+  });
+
+  // Delete MyBook
+  app.delete("/deleteEvent/:id", async (req, res) => {
+    console.log(req.params.id);
+    const result = await BooksCollection.deleteOne({
+      _id: req.params.id,
+    });
+    res.send(result);
   });
 
   // Get Services
