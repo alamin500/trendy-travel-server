@@ -14,12 +14,6 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
 });
 
-// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.texip.mongodb.net/volunteerNetwork?retryWrites=true&w=majority`;
-
-// const client = new MongoClient(uri, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
 console.log(uri);
 app.get("/", (req, res) => {
   res.send("Welcome our tour booking Website!");
@@ -33,16 +27,12 @@ client.connect((err) => {
 
   // Add Services
   app.post("/addServices", async (req, res) => {
-    console.log(req.body);
     const result = await ToursCollection.insertOne(req.body);
-    console.log(result);
   });
 
   // Add MyBooks
   app.post("/myBook", async (req, res) => {
-    console.log(req.body);
     const result = await BooksCollection.insertOne(req.body);
-    console.log(result);
   });
 
   // Get My books
